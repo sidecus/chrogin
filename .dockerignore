@@ -1,0 +1,6 @@
+Dockerfile
+gin-report
+*.md
+Makefile
+.gitignore
+.git
