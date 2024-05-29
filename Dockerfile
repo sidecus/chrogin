@@ -15,12 +15,11 @@ FROM alpine:3.20.0
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 RUN apk add --update --no-cache chromium
 
-WORKDIR /app
 # USER user
+WORKDIR /app
 COPY --from=builder --chmod=0555 /app/publish/gin-report /app
 COPY ./templates /app/templates
-COPY --chmod=0555 ./chrome.sh .
-RUN mkdir pdf
+COPY ./assets /app/assets
 ENTRYPOINT ["/app/gin-report"]
 
 # Usage sample:

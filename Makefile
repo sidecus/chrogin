@@ -10,7 +10,7 @@ build :
 	docker build -t ${NAMESPACE}/${NAME}:latest .
 
 run :
-	docker run --rm -it ${NAMESPACE}/${NAME}
+	docker run --rm -it -p 8080:8080 ${NAMESPACE}/${NAME}
 
 fullbuild:
 	docker build -t ${NAMESPACE}/${NAME}:${TAG} -t ${NAMESPACE}/${NAME}:latest .

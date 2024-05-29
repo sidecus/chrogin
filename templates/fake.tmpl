@@ -1,4 +1,4 @@
-{{ define "report/index.tmpl" }}
+{{ define "fake.tmpl" }}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +8,8 @@
   </head>
   <body>
     <h1>
-      {{ .title }}
+      {{ .Title }}
     </h1>
-    <p>Using users/index.tmpl</p>
     <div id="main" style="width: 600px; height: 400px;"></div>
     <script>
       var chartDom = document.getElementById('main');
@@ -18,6 +17,7 @@
       var option;
 
       option = {
+        animation: false,
         xAxis: {
           type: 'category',
           boundaryGap: false
@@ -59,7 +59,7 @@
               data: [{ xAxis: 1 }, { xAxis: 3 }, { xAxis: 5 }, { xAxis: 7 }]
             },
             areaStyle: {},
-            data: {{.Data}}
+            data: {{ .Data }}
           }
         ]
       };

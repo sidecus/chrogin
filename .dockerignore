@@ -4,3 +4,4 @@ gin-report
 Makefile
 .gitignore
 .git
+__debug_*
