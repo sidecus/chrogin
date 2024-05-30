@@ -1,7 +1,9 @@
 Dockerfile
-gin-report
 *.md
 Makefile
 .gitignore
 .git
+
 __debug_*
+chrogin
+publish

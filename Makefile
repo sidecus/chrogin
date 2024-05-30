@@ -1,16 +1,19 @@
-NAME := gin-report
+NAME := chrogin
 TAG := $(shell git log -1 --pretty=%h)
 NAMESPACE := sidecus
 
-.PHONY : build run
+.PHONY: local build run full
 
-all : build run
+debug: buildcn run
 
-build :
-	docker build -t ${NAMESPACE}/${NAME}:latest .
+build:
+	docker build --progress=plain -t ${NAMESPACE}/${NAME}:latest .
 
-run :
+buildcn:
+	docker build --progress=plain --build-arg GOPROXY=https://goproxy.cn --build-arg APKREPOSITORY=mirrors.tuna.tsinghua.edu.cn -t ${NAMESPACE}/${NAME}:latest .
+
+full: build
+	docker tag -t ${NAMESPACE}/${NAME}:${TAG} ${NAMESPACE}/${NAME}:latest
+
+run:
 	docker run --rm -it -p 8080:8080 ${NAMESPACE}/${NAME}
-
-fullbuild:
-	docker build -t ${NAMESPACE}/${NAME}:${TAG} -t ${NAMESPACE}/${NAME}:latest .
