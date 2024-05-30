@@ -8,34 +8,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type FakeDataPoint struct {
-	date string
-	data int
+type FakeReportProvider struct {
+	Name     string
+	Template string
 }
 
-type FakeReportProvider struct {
+func newFakeReportProvider() *FakeReportProvider {
+	p := &FakeReportProvider{}
+	p.Name = "fake"
+	p.Template = "fake.tmpl"
+
+	return p
 }
 
 func (p *FakeReportProvider) GetName() string {
-	return "fake"
+	return p.Name
 }
 
 func (p *FakeReportProvider) GetTemplate() string {
-	return "fake.tmpl"
+	return p.Template
 }
 
 func (p *FakeReportProvider) GetPayload() gin.H {
-	data := p.acquireData()
-	dataStr := p.formatData(data)
-
-	return gin.H{
-		"Title": "fake report",
-		"Data":  template.JS(dataStr),
-	}
-}
-
-func (*FakeReportProvider) acquireData() []FakeDataPoint {
-	return []FakeDataPoint{
+	data := []FakeDataPoint{
 		{date: "2019-10-10", data: 200},
 		{date: "2019-10-11", data: 560},
 		{date: "2019-10-12", data: 750},
@@ -46,9 +41,8 @@ func (*FakeReportProvider) acquireData() []FakeDataPoint {
 		{date: "2019-10-17", data: 300},
 		{date: "2019-10-18", data: 100},
 	}
-}
 
-func (*FakeReportProvider) formatData(data []FakeDataPoint) string {
+	// Convert data to JS array
 	var sb strings.Builder
 
 	sb.WriteString("[")
@@ -57,5 +51,16 @@ func (*FakeReportProvider) formatData(data []FakeDataPoint) string {
 	}
 	sb.WriteString("]")
 
-	return sb.String()
+	dataStr := sb.String()
+
+	// Construct payload
+	return gin.H{
+		"Title": "fake report",
+		"Data":  template.JS(dataStr),
+	}
+}
+
+type FakeDataPoint struct {
+	date string
+	data int
 }

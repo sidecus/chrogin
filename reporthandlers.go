@@ -16,6 +16,10 @@ type Req struct {
 
 var m = newReportManager()
 
+func reportListHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, m.GetSummary())
+}
+
 func reportHandler(c *gin.Context) {
 	var req Req
 	if err := c.ShouldBindUri(&req); err != nil {
@@ -23,7 +27,12 @@ func reportHandler(c *gin.Context) {
 		return
 	}
 
-	p := m.providerMap[req.Name]
+	p, err := m.GetProvider(req.Name)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+		return
+	}
+
 	c.HTML(http.StatusOK, p.GetTemplate(), p.GetPayload())
 }
 
@@ -39,7 +48,8 @@ func downloadHandler(c *gin.Context) {
 	defer os.Remove(f.Name())
 
 	// Try to generate the report using the given file
-	url := fmt.Sprintf("http://localhost:%d%s", config.Port, strings.TrimSuffix(c.Request.URL.String(), config.DownloadSuffix))
+	relativeUrl := strings.TrimSuffix(c.Request.URL.String(), config.DownloadSuffix)
+	url := fmt.Sprintf("http://localhost:%d%s", config.Port, relativeUrl)
 	cmd := exec.Command(
 		"chromium",
 		"--no-sandbox",
