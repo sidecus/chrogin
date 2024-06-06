@@ -3,6 +3,9 @@ Dockerfile
 Makefile
 .gitignore
 .git
+.devcontainer
+.github
+.http
 
 __debug_*
 chrogin
