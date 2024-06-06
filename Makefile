@@ -2,7 +2,7 @@ NAME := chrogin
 TAG := $(shell git log -1 --pretty=%h)
 NAMESPACE := sidecus
 
-.PHONY: local build run full
+.PHONY: debug build buildcn full run
 
 debug: buildcn run
 
