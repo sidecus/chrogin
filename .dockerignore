@@ -1,9 +1,18 @@
 Dockerfile
-*.md
-Makefile
+.dockerignore
+
+# Ignore all files not related to build
 .gitignore
 .git
+.devcontainer
+.github
+.http
 
+# Ignore other files
+*.md
+Makefile
+
+# Ignore build and publish intermettient results
 __debug_*
 chrogin
 publish
