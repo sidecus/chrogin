@@ -52,21 +52,27 @@ func getReportUri(req DownloadReq) (string, error) {
 		return "", fmt.Errorf("name and uri cannot be empty at the same time")
 	}
 
+	if req.Name != "" && req.Uri != "" {
+		return "", fmt.Errorf("name and uri cannot be specified at the same time")
+	}
+
 	if req.Name != "" {
+		// built in report
 		if _, err := m.GetProvider(req.Name); err != nil {
 			return "", err
 		}
 
 		// Try to generate the report uri based on its name
 		return fmt.Sprintf(EmbededReportUriFmtString, config.Port, req.Name), nil
-	}
+	} else {
+		// external url, ensure it's valid
+		_, err := url.Parse(req.Uri)
+		if err != nil {
+			return "", err
+		}
 
-	_, err := url.Parse(req.Uri)
-	if err != nil {
-		return "", err
+		return req.Uri, nil
 	}
-
-	return req.Uri, nil
 }
 
 func getTempFileName() (string, error) {

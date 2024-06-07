@@ -4,10 +4,30 @@ GET http://localhost:8080/reports HTTP/1.1
 ### Get the fake report
 GET http://localhost:8080/reports/fake HTTP/1.1
 
-### Download report
+### Get the non-existing report
+GET http://localhost:8080/reports/non-existing HTTP/1.1
+
+### Download built in report
 POST http://localhost:8080/download HTTP/1.1
 Content-Type: application/json
 
 {
     "name": "fake"
+}
+
+### Download bing home page
+POST http://localhost:8080/download HTTP/1.1
+Content-Type: application/json
+
+{
+    "uri": "https://bing.com"
+}
+
+### name and uri at the same time
+POST http://localhost:8080/download HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "fake",
+    "uri": "http"
 }

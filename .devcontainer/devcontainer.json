@@ -27,7 +27,8 @@
 		"vscode": {
 			"extensions": [
 				"golang.go",
-				"humao.rest-client"
+				"humao.rest-client",
+				"tomoki1207.pdf"
 			]
 		}
 	}
