@@ -26,11 +26,11 @@ ENV GOPATH=/go \
 ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 1777 "$GOPATH"
 COPY --from=golang:1.22.3-alpine3.20 --link $GOROOT $GOROOT
-COPY --chmod=0755 ./gotools.sh $GOPATH/
+COPY --chmod=0755 ./.vscode/gotools.sh $GOPATH/
 RUN sh -c $GOPATH/gotools.sh
 
 # Release stage, use TINI to collect zombie processes after executing chrominum
-FROM base
+FROM base as release
 WORKDIR /app
 COPY --from=builder --chmod=0555 /app/publish/chrogin ./
 COPY templates templates/
