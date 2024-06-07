@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -66,9 +67,13 @@ func getReportUri(req DownloadReq) (string, error) {
 		return fmt.Sprintf(EmbededReportUriFmtString, config.Port, req.Name), nil
 	} else {
 		// external url, ensure it's valid
-		_, err := url.Parse(req.Uri)
+		ret, err := url.Parse(req.Uri)
 		if err != nil {
 			return "", err
+		}
+
+		if (ret.Scheme != "http" && ret.Scheme != "https") || ret.Host == "" {
+			return "", errors.New("invalid schema or host in the uri")
 		}
 
 		return req.Uri, nil
